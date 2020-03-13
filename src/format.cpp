@@ -15,8 +15,10 @@ std::string Format::ElapsedTime(long seconds) {
     if (days > 0) {
         stringstream << days << " days, ";
     }
-    stringstream << std::setfill('0') << std::setw(2) << hours << ":";
-    stringstream << std::setfill('0') << std::setw(2) << minutes << ":";
-    stringstream << std::setfill('0') << std::setw(2) << seconds;
+    if (hours > 0) {
+        stringstream << std::setfill(' ') << std::setw(2) << hours << " hours, "; 
+    }
+    stringstream << std::setfill(' ') << std::setw(2) << minutes << " minutes, ";
+    stringstream << std::setfill(' ') << std::setw(2) << seconds << " seconds";
     return stringstream.str(); 
 }
