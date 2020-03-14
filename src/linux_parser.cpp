@@ -1,9 +1,9 @@
+#include "linux_parser.h"
 #include <dirent.h>
 #include <unistd.h>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
-#include "linux_parser.h"
 
 using std::stof;
 using std::string;
@@ -66,7 +66,7 @@ vector<int> LinuxParser::Pids() {
   return pids;
 }
 
-float LinuxParser::MemoryUtilization() { 
+float LinuxParser::MemoryUtilization() {
   string line, key, value;
   int mem_total, mem_free;
   std::ifstream filestream(kProcDirectory + kMeminfoFilename);
@@ -85,7 +85,7 @@ float LinuxParser::MemoryUtilization() {
   return static_cast<float>(mem_total - mem_free) / mem_total;
 }
 
-long LinuxParser::UpTime() { 
+long LinuxParser::UpTime() {
   string line;
   long uptime;
   std::ifstream filestream(kProcDirectory + kUptimeFilename);
@@ -110,10 +110,23 @@ long LinuxParser::ActiveJiffies() { return 0; }
 // TODO: Read and return the number of idle jiffies for the system
 long LinuxParser::IdleJiffies() { return 0; }
 
-// TODO: Read and return CPU utilization
-vector<string> LinuxParser::CpuUtilization() { return {}; }
+vector<string> LinuxParser::CpuUtilization() {
+  string line;
+  vector<string> values;
+  std::ifstream filestream(kProcDirectory + kStatFilename);
+  if (filestream.is_open()) {
+    std::getline(filestream, line);
+    std::istringstream linestream(line);
+    string value;
+    linestream >> value;  // skip cpu
+    while (linestream >> value) {
+      values.push_back(value);
+    }
+  }
+  return values;
+}
 
-int LinuxParser::TotalProcesses() { 
+int LinuxParser::TotalProcesses() {
   string line, key, value;
   int processes;
   std::ifstream filestream(kProcDirectory + kStatFilename);
@@ -130,7 +143,7 @@ int LinuxParser::TotalProcesses() {
   return processes;
 }
 
-int LinuxParser::RunningProcesses() { 
+int LinuxParser::RunningProcesses() {
   string line, key, value;
   int processes;
   std::ifstream filestream(kProcDirectory + kStatFilename);
