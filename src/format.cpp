@@ -12,13 +12,14 @@ std::string Format::ElapsedTime(long seconds) {
     int minutes = seconds / 60;
     seconds %= 60;
     std::stringstream stringstream;
-    if (days > 0) {
+    if (days == 1) {
+        stringstream << days << " day, ";
+    } else if (days > 1) {
         stringstream << days << " days, ";
     }
-    if (hours > 0) {
-        stringstream << std::setfill(' ') << std::setw(2) << hours << " hours, "; 
-    }
-    stringstream << std::setfill(' ') << std::setw(2) << minutes << " minutes, ";
-    stringstream << std::setfill(' ') << std::setw(2) << seconds << " seconds";
+
+    stringstream << std::setfill('0') << std::setw(2) << hours << ":";
+    stringstream << std::setfill('0') << std::setw(2) << minutes << ":";
+    stringstream << std::setfill('0') << std::setw(2) << seconds;
     return stringstream.str(); 
 }
