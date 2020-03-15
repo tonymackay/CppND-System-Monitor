@@ -29,7 +29,7 @@ Processor& System::Cpu() {
 vector<Process>& System::Processes() { 
     vector<int> pids = LinuxParser::Pids();
     for(int pid : pids) {
-        auto itr = std::find_if(processes_.begin(), processes_.end(), [&pid](Process & p) { return p.Pid() == pid; });
+        auto itr = std::find_if(processes_.begin(), processes_.end(), [&pid](const Process & p) { return p.Pid() == pid; });
         if (itr != processes_.cend()) {
             itr->Ram(LinuxParser::Ram(pid));
             itr->UpTime(LinuxParser::UpTime(pid));
@@ -42,8 +42,9 @@ vector<Process>& System::Processes() {
         }
     }
 
-    std::sort(processes_.begin(), processes_.end(), [](Process& pa, Process& pb){
-        return pa.Ram() > pb.Ram();
+    std::sort(processes_.begin(), processes_.end(), [](const Process & pa, const Process & pb) {
+        // by default sort by highest to lowest PID
+        return pa > pb;
     });
 
     return processes_; 

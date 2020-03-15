@@ -17,13 +17,13 @@ Process::Process(int pid, std::string user, std::string command)
     this->command = command;
 }
 
-int Process::Pid() { return this->pid; }
+int Process::Pid() const { return this->pid; }
 
-float Process::CpuUtilization() { return this->cpu_utilization; }
+float Process::CpuUtilization() const { return this->cpu_utilization; }
 
-string Process::Command() { return this->command; }
+string Process::Command() const { return this->command; }
 
-int Process::Ram() { return this->ram; }
+int Process::Ram() const { return this->ram; }
 
 void Process::Ram(std::string ram) {
     int kb = std::stoi(ram);
@@ -31,12 +31,16 @@ void Process::Ram(std::string ram) {
     this->ram = mb; 
 }
 
-string Process::User() { return this->user; }
+string Process::User() const { return this->user; }
 
-long int Process::UpTime() { return this->up_time; }
+long int Process::UpTime() const { return this->up_time; }
 
 void Process::UpTime(long int up_time) { this->up_time = up_time; }
 
-// TODO: Overload the "less than" comparison operator for Process objects
-// REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a[[maybe_unused]]) const { return true; }
+bool Process::operator<(Process const& a) const { 
+    return this->pid < a.Pid();
+}
+
+bool Process::operator>(Process const& a) const { 
+    return this->pid > a.Pid();
+}

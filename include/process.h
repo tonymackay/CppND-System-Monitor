@@ -6,15 +6,16 @@
 class Process {
  public:
   Process(int pid, std::string user, std::string command);
-  int Pid();
-  std::string User();
-  std::string Command();
-  int Ram();
+  int Pid() const;
+  std::string User() const;
+  std::string Command() const;
+  int Ram() const;
   void Ram(std::string ram);
-  long int UpTime();  
-  void UpTime(long int up_time);
-  float CpuUtilization();
+  long UpTime() const;
+  void UpTime(long up_time);
+  float CpuUtilization() const;
   bool operator<(Process const& a) const;
+  bool operator>(Process const& a) const;
 
  private:
   int pid{0};
