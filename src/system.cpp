@@ -21,7 +21,33 @@ Processor& System::Cpu() {
 }
 
 // TODO: Return a container composed of the system's processes
-vector<Process>& System::Processes() { return processes_; }
+// 1. Add Memory Utilization
+// 2. Add CPU Util
+// 3. Sort by Memory/CPU
+// 4. Fix issue with uptime (formatting)
+
+vector<Process>& System::Processes() { 
+    vector<int> pids = LinuxParser::Pids();
+    for(int pid : pids) {
+        auto itr = std::find_if(processes_.begin(), processes_.end(), [&pid](Process & p) { return p.Pid() == pid; });
+        if (itr != processes_.cend()) {
+            itr->Ram(LinuxParser::Ram(pid));
+            itr->UpTime(LinuxParser::UpTime(pid));
+        }
+        else {
+            Process process{pid, LinuxParser::User(pid), LinuxParser::Command(pid)};
+            process.Ram(LinuxParser::Ram(pid));
+            process.UpTime(LinuxParser::UpTime(pid));
+            processes_.push_back(process);
+        }
+    }
+
+    std::sort(processes_.begin(), processes_.end(), [](Process& pa, Process& pb){
+        return pa.Ram() > pb.Ram();
+    });
+
+    return processes_; 
+}
 
 std::string System::Kernel() { return LinuxParser::Kernel(); }
 
