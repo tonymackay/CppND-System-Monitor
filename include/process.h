@@ -2,6 +2,7 @@
 #define PROCESS_H
 
 #include <string>
+#include <vector>
 
 class Process {
  public:
@@ -14,6 +15,7 @@ class Process {
   long UpTime() const;
   void UpTime(long up_time);
   float CpuUtilization() const;
+  void CpuUtilization(std::vector<std::string> proc_stat_data);
   bool operator<(Process const& a) const;
   bool operator>(Process const& a) const;
 
@@ -24,6 +26,7 @@ class Process {
   float cpu_utilization{0};
   int ram{0};
   long int up_time{0};
+  long hertz{0};
 };
 
 #endif
