@@ -21,10 +21,8 @@ Processor& System::Cpu() {
 }
 
 // TODO: Return a container composed of the system's processes
-// 1. Add Memory Utilization
-// 2. Add CPU Util
-// 3. Sort by Memory/CPU
-// 4. Fix issue with uptime (formatting)
+// 1. Add CPU Util
+// 2. Sort by Memory/CPU
 
 vector<Process>& System::Processes() { 
     vector<int> pids = LinuxParser::Pids();
